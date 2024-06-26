@@ -1,0 +1,15 @@
+{
+    "id": "{C4D7A2A4-789F-63CE-D5CC-DD0BD1671C0C}",
+    "name": "LayZSpa",
+    "type": 3,
+    "vendor": "Lay-Z-Spa",
+    "aliases":
+    [
+        "HydroJet Pro"
+    ],
+    "url": "",
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "BW"
+}
