@@ -193,17 +193,10 @@ class LayZSpa extends IPSModule
     private function SetHydroJet(bool $state)
     {
         $this->ControlDevice("jet", $state ? 1 : 0, "HydroJet Düsen");
-        // Sicherstellen, dass die HydroJets ausgeschaltet sind, bevor Filter oder Heizung aktiviert werden
-        if (!$state) {
-            IPS_Sleep(2000); // 2 Sekunden warten
-        }
     }
 
     private function SetHeizung(bool $state)
     {
-        // Sicherstellen, dass die HydroJets ausgeschaltet sind
-        $this->SetHydroJet(false);
-        IPS_Sleep(2000); // 2 Sekunden warten
         $this->ControlDevice("heat", $state ? 3 : 0, "Heizung");
     }
 
@@ -473,4 +466,3 @@ class PoolController
     }
 }
 ?>
-
