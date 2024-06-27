@@ -193,10 +193,17 @@ class LayZSpa extends IPSModule
     private function SetHydroJet(bool $state)
     {
         $this->ControlDevice("jet", $state ? 1 : 0, "HydroJet Düsen");
+        if (!$state) {
+            IPS_Sleep(2000); // 2 Sekunden warten nach dem Ausschalten der HydroJets
+        }
     }
 
     private function SetHeizung(bool $state)
     {
+        if ($state) {
+            $this->SetHydroJet(false);
+            IPS_Sleep(2000); // 2 Sekunden warten nach dem Ausschalten der HydroJets
+        }
         $this->ControlDevice("heat", $state ? 3 : 0, "Heizung");
     }
 
