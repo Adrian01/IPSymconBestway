@@ -71,7 +71,7 @@ class LayZSpa extends IPSModule
         $this->RegisterVariableString("Fehlercode", "Fehlercode", "", 12);
 
         // Timer für Status-Update registrieren (auf 30 Sekunden gesetzt)
-        $this->RegisterTimer("UpdateStatus", 30000, 'LayZSpa_UpdateStatus($_IPS[\'TARGET\']);');
+        $this->RegisterTimer("UpdateStatus", 30000, 'BW_UpdateStatus($_IPS[\'TARGET\']);');
     }
 
     public function ApplyChanges()
