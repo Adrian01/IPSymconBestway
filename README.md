@@ -80,6 +80,13 @@ BW_SetAirJet(int $InstanceID, int $value)
 ```php
 BW_SetHydroJet(int $InstanceID, bool $state)
 ```
+
+
+|         Variable         |  Typ   |                  GUID                  |
+|:--------------------------:|:------:|:--------------------------------------:|
+|                            | Device | {538F6461-5410-4F4C-91D3-B39122152D56} |
+
+
 ## 5. Spenden
 
 Dieses Modul ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    
