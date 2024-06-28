@@ -86,7 +86,7 @@ BW_SetAirJet(int $InstanceID, int $value)
 BW_SetHydroJet(int $InstanceID, bool $state)
 ```
 |    Wert     |    Beschreibung     |
-|:---------------------------------:|
+|:-----------:|:-------------------:|
 | 0           | Aus                 |
 | 1           | Stufe 1             |
 | 2           | Stufe 2             |
