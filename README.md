@@ -12,6 +12,10 @@
 5. [Funktionsreferenz](#5-funktionsreferenz)
 6. [Statusvariablen](#6-statusvariablen)
 7. [Anhang](#7-anhang)
+   1. [GUIDs der Module](#guids-der-module)
+   2. [Spenden](#spenden)
+
+
 
 
 
@@ -123,7 +127,7 @@ BW_SetHydroJet(int $InstanceID, bool $state)
 
 
 
-## 8. Spenden
+###  Spenden
 
 Dieses Modul ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    
 
