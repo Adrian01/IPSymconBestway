@@ -85,11 +85,11 @@ BW_SetAirJet(int $InstanceID, int $value)
 ```php
 BW_SetHydroJet(int $InstanceID, bool $state)
 ```
-|         Mögliche Werte     |
-|:-----------:||:-----------:|
-| 0 | Aus                    |
-| 1 | Stufe 1                |
-| 2 | Stufe 2                |
+|    Wert     |    Beschreibung     |
+|:---------------------------------:|
+| 0           | Aus                 |
+| 1           | Stufe 1             |
+| 2           | Stufe 2             |
 
 
 ## 5. Statusvariablen
