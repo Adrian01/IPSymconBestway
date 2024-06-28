@@ -50,12 +50,36 @@ Modul im Module Control hinzufügen: https://github.com/Adrian01/IPSymconBestway
 
 ## 4. Funktionsreferenz
 
- _**Schaltet die Pumpeneinheit Ein/Aus**_
+ _**Whirlpool Ein-/Ausschalten**_
 ```php
 BW_SetPower(int $InstanceID, bool $state)
 ```
 
+ _**Filterfunktion Ein-/Ausschalten**_
+```php
+BW_SetFilter(int $InstanceID, bool $state)
+```
 
+ _**Heizung Ein-/Ausschalten**_
+```php
+BW_SetHeater(int $InstanceID, bool $state)
+```
+
+ _**Stellt die Solltemperatur auf den gewünschten Wert ein**_
+```php
+BW_SetTemperature(int $InstanceID, int $value)
+```
+Es werden Werte zwischen 20 °C und 40 °C akzeptiert
+
+ _**Schalten der AirJet Düsen auf Stufe 0, 1 oder 2**_
+```php
+BW_SetAirJet(int $InstanceID, int $value)
+```
+
+ _**HydroJet Düsen Ein-/Ausschalten**_
+```php
+BW_SetHeater(int $InstanceID, bool $state)
+```
 ## 5. Spenden
 
 Dieses Modul ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    
