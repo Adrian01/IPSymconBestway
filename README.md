@@ -49,10 +49,10 @@ Modul im Module Control hinzufügen: https://github.com/Adrian01/IPSymconBestway
 
 ## 4. Funktionsreferenz
 
+ _**Schaltet die Pumpeneinheit Ein/Aus**_
 ```php
 BW_SetPower(int $InstanceID, bool $state)
 ```
-Prüft die Rollladenposition gemäß der in der Instanz festgelegten Eigenschaften und fährt den Rollladen auf die ermittelte Position. Wenn $considerDeactivationTimes == true, dann wird DeactivationAutomaticMovement berücksichtigt. Die Funktion dient nur zu Testzwecken
 
 
 ## 5. Spenden
