@@ -3,6 +3,7 @@
 [![Donate](https://img.shields.io/badge/Donate-Paypal-009cde.svg)](https://www.paypal.me/adrianschmidt1121)
 # IP-Symcon Lay-Z-Spa Controller
 
+
 **Inhaltsverzeichnis**
 
 1. [Funktionsumfang](#1-funktionsumfang)
@@ -16,10 +17,6 @@
    2. [Spenden](#spenden)
 
 
-
-
-
-
 ## 1. Funktionsumfang
 
 Das Modul dient zur Steuerung eines Lay-Z-Spa Whirlpools mit integiertem W-LAN Modul
@@ -29,11 +26,11 @@ Aktuelle Features:
 - Ein- und Ausschalten der gesamten Pumpeneinheit
 - Ein- und Ausschalten der Filterfunktion
 - Ein- und Ausschalten der Heizung
+- Ein- und Ausschalten der HydroJet Düsen
+- Ein- und Ausschalten der AirJet Düsen und wahl der Stärke/Stufen ( Stufe 1 und 2 )
 - Einstellen der gewünschten Solltemperatur
 - Auslesen der aktuellen Wassertemperatur
 - Auslesen ob die Heizung gerade aktiv heizt
-- Ein- und Ausschalten der HydroJet Düsen
-- Ein- und Ausschalten der AirJet Düsen und wahl der Stärke/Stufen ( Stufe 1 und 2 )
 - Ausgabe eines Fehlercodes wenn dieser ansteht
 
 
