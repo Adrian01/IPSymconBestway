@@ -1,7 +1,7 @@
 [![Version](https://img.shields.io/badge/Symcon-PHPModul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 ![Version](https://img.shields.io/badge/Symcon%20Version-7.0%20%3E-blue.svg)
 [![Donate](https://img.shields.io/badge/Donate-Paypal-009cde.svg)](https://www.paypal.me/adrianschmidt1121)
-# IPSymcon Lay-Z-Spa
+# IP-Symcon Lay-Z-Spa Controller
 
 **Inhaltsverzeichnis**
 
