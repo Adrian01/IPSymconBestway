@@ -253,7 +253,7 @@ class LayZSpa extends IPSModule
             $controller = new PoolController([], $token, $this->apiRoot, [], $deviceId, $this->applicationId);
             $controller->setDeviceAttribute($attribute, $value);
             $this->LogMessage("$logName wurde auf " . ($value ? "EIN" : "AUS") . " gesetzt.", KL_NOTIFY);
-            IPS_Sleep(2000); // 2 Sekunde warten
+            IPS_Sleep(3000); // 3 Sekunde warten
             $this->UpdateStatus();
         } else {
             $this->LogMessage('Token oder Geräte-ID konnte nicht abgerufen werden.', KL_WARNING);
