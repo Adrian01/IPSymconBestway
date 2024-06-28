@@ -41,8 +41,18 @@ Aktuelle Features:
 
 Modul im Module Control hinzufügen: https://github.com/Adrian01/IPSymconBestway
 
+### 3.2 Eingabe der Anmeldedaten und Modul aktivieren
+
 ![image](docs/login.png)
 
+Über die Checkbox "Modul aktiv" kann die komplette Funktion des Moduls aktiviert und deaktiviert werden. 
+
+## 4. Funktionsreferenz
+
+```php
+BW_SetPower(int $InstanceID, bool $state)
+```
+Prüft die Rollladenposition gemäß der in der Instanz festgelegten Eigenschaften und fährt den Rollladen auf die ermittelte Position. Wenn $considerDeactivationTimes == true, dann wird DeactivationAutomaticMovement berücksichtigt. Die Funktion dient nur zu Testzwecken
 
 
 ## 5. Spenden
