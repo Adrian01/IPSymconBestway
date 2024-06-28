@@ -98,6 +98,16 @@ BW_SetHydroJet(int $InstanceID, bool $state)
 |      Fehlercode            | String  | sollte ein Fehler anstehen, wird dieser hier ausgegeben                               |
 
 
+## 7. Anhang
+
+###  GUIDs der Module
+
+|           Modul            |  Typ   |                  GUID                  |
+|:--------------------------:|:------:|:--------------------------------------:|
+|          LayZSpa           | Device | {C4D7A2A4-789F-63CE-D5CC-DD0BD1671C0C} |
+
+
+
 ## 6. Spenden
 
 Dieses Modul ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    
