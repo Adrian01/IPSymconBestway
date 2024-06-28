@@ -3,8 +3,6 @@
 [![Donate](https://img.shields.io/badge/Donate-Paypal-009cde.svg)](https://www.paypal.me/adrianschmidt1121)
 # IP-Symcon Lay-Z-Spa Controller
 
-![image](docs/logo.png)
-
 **Inhaltsverzeichnis**
 
 1. [Funktionsumfang](#1-funktionsumfang)
