@@ -78,7 +78,7 @@ BW_SetAirJet(int $InstanceID, int $value)
 
  _**HydroJet Düsen Ein-/Ausschalten**_
 ```php
-BW_SetHeater(int $InstanceID, bool $state)
+BW_SetHydroJet(int $InstanceID, bool $state)
 ```
 ## 5. Spenden
 
