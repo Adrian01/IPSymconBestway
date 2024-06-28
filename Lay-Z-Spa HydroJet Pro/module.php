@@ -195,7 +195,6 @@ class LayZSpa extends IPSModule
                 $this->SetValueIfExists("Wassertemperatur", isset($status["attr"]["Tnow"]) ? $status["attr"]["Tnow"] : 0);
                 $this->SetValueIfExists("HeizungAktiv", isset($status["attr"]["heat"]) && in_array($status["attr"]["heat"], [3, 5, 6]));
                 $this->SetValueIfExists("Fehlercode", $this->GetErrorCode($status["attr"]));
-                IPS_LogMessage('Lay-Z-Spa', 'Status Updates wurden erfolgreich vom Server geladen.');
             } else {
                 $this->LogMessage('Statusinformationen konnten nicht abgerufen werden.', KL_WARNING);
             }
@@ -254,7 +253,7 @@ class LayZSpa extends IPSModule
             $controller = new PoolController([], $token, $this->apiRoot, [], $deviceId, $this->applicationId);
             $controller->setDeviceAttribute($attribute, $value);
             $this->LogMessage("$logName wurde auf " . ($value ? "EIN" : "AUS") . " gesetzt.", KL_NOTIFY);
-            IPS_Sleep(1000); // 1 Sekunde warten
+            IPS_Sleep(2000); // 2 Sekunde warten
             $this->UpdateStatus();
         } else {
             $this->LogMessage('Token oder Geräte-ID konnte nicht abgerufen werden.', KL_WARNING);
@@ -280,7 +279,7 @@ class LayZSpa extends IPSModule
         if ($token !== null && $deviceId !== "") {
             $devices = $this->getDevices($token);
             if ($devices !== null && count($devices) > 0) {
-                $device = $devices[0]; // Wir nehmen an, dass nur ein Gerät vorhanden ist
+                $device = $devices[0]; // Annahme das nur ein Gerät vorhanden ist
                 $this->SetValueIfExists("ProductName", $device["product_name"]);
                 $this->SetValueIfExists("MCUHardVersion", $device["mcu_hard_version"]);
                 $this->SetValueIfExists("MCUSoftVersion", $device["mcu_soft_version"]);
