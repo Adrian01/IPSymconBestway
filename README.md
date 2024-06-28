@@ -5,9 +5,15 @@
 
 **Inhaltsverzeichnis**
 
-[Funktionsumfang](#1-funktionsumfang)
-[Voraussetzungen](#2-voraussetungen)
-[Unterstützte Gerätetypen](#3-unterstützte-gerätevarianten)
+1. [Funktionsumfang](#1-funktionsumfang)
+2. [Voraussetzungen](#2-voraussetungen)
+3. [Unterstützte Gerätetypen](#3-unterstützte-gerätevarianten)
+4. [Installation](#4-installation)
+5. [Funktionsreferenz](#5-funktionsreferenz)
+6. [Statusvariablen](#6-statusvariablen)
+7. [Anhang](#7-anhang)
+
+
 
 
 ## 1. Funktionsumfang
