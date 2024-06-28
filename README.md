@@ -5,15 +5,7 @@
 
 **Inhaltsverzeichnis**
 
-1. [Funktionsumfang](#1-funktionsumfang)  
-2. [Voraussetzungen](#2-voraussetzungen)  
-3. [Installation](#3-unterstützte-gerätevarianten)  
-4. [Funktionsreferenz](#4-funktionsreferenz)
-5. [Konfiguration](#5-konfiguration)  
-6. [Statusvariablen und Profile](#6-statusvariablen-und-profile)  
-7. [Anhang](#7-anhang)
-    1. [GUIDs der Module](#guids-der-module)
-    2. [Spenden](#spenden)
+
 
 ## 1. Funktionsumfang
 
