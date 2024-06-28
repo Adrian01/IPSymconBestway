@@ -36,6 +36,13 @@ Aktuelle Features:
 - IP-Symcon 7.0
 - Bestway SmartHub Account mit eingebundenem Whirlpool von Lay-Z-Spa
 
+## 3. Unterstütze Protokoll Varianten
+
+| Protokoll    | Unterstützt        |
+| ------------ | ------------------ |
+| Hydrojet     | :white_check_mark: |
+| Hydrojet_Pro | :white_check_mark: |
+
 ## 3. Installation
 
 ### 3.1 Laden des Moduls
@@ -79,18 +86,16 @@ Es werden Werte zwischen 20 °C und 40 °C akzeptiert
 ```php
 BW_SetAirJet(int $InstanceID, int $value)
 ```
-
-
- _**HydroJet Düsen Ein-/Ausschalten**_
-```php
-BW_SetHydroJet(int $InstanceID, bool $state)
-```
 |    Wert     |    Beschreibung     |
 |:-----------:|:-------------------:|
 | 0           | Aus                 |
 | 1           | Stufe 1             |
 | 2           | Stufe 2             |
 
+ _**HydroJet Düsen Ein-/Ausschalten**_
+```php
+BW_SetHydroJet(int $InstanceID, bool $state)
+```
 
 ## 5. Statusvariablen
 
