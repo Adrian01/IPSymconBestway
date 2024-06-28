@@ -7,7 +7,7 @@ class LayZSpa extends IPSModule
 
     public function Create()
     {
-        // Niemals diese Zeile löschen!
+
         parent::Create();
         
         // Properties registrieren
@@ -22,53 +22,63 @@ class LayZSpa extends IPSModule
         $this->RegisterAttributeInteger("TokenExpire", 0);
         $this->RegisterAttributeString("DeviceId", "");
 
-        // Variablen registrieren
-        $this->RegisterVariableBoolean("Power", "Power", "~Switch", 1);
-        $this->EnableAction("Power");
-
-        $this->RegisterVariableBoolean("Filter", "Filter", "~Switch", 2);
-        $this->EnableAction("Filter");
-
-        $this->RegisterVariableBoolean("Heizung", "Heizung", "~Switch", 3);
-        $this->EnableAction("Heizung");
-
-        if (!IPS_VariableProfileExists("BW.HeizungAktiv")) {
-            IPS_CreateVariableProfile("BW.HeizungAktiv", 0); // Boolean Profile
-            IPS_SetVariableProfileAssociation("BW.HeizungAktiv", 0, "Inaktiv", "", -1);
-            IPS_SetVariableProfileAssociation("BW.HeizungAktiv", 1, "Aktiv", "", -1);
+        
+        // Variablen Profile erzeugen
+        if (!IPS_VariableProfileExists("BW.Switch")) {
+            IPS_CreateVariableProfile("BW.Switch", 0); // Boolean Profil
+            IPS_SetVariableProfileAssociation("BW.Switch", 0, "Aus", "", -1);
+            IPS_SetVariableProfileAssociation("BW.Switch", 1, "Ein", "", -1);
         }
 
-        $this->RegisterVariableBoolean("HeizungAktiv", "Heizung aktiv", "BW.HeizungAktiv", 4);
+        if (!IPS_VariableProfileExists("BW.HeatActiv")) {
+            IPS_CreateVariableProfile("BW.HeatActiv", 0); // Boolean Profil
+            IPS_SetVariableProfileAssociation("BW.HeatActiv", 0, "Inaktiv", "", -1);
+            IPS_SetVariableProfileAssociation("BW.HeatActiv", 1, "Aktiv", "", -1);
+        }
 
         if (!IPS_VariableProfileExists("BW.Temperature")) {
-            IPS_CreateVariableProfile("BW.Temperature", 1); // Integer Profile
+            IPS_CreateVariableProfile("BW.Temperature", 1); // Integer Profil
             IPS_SetVariableProfileText("BW.Temperature", "", " °C");
             IPS_SetVariableProfileValues("BW.Temperature", 20, 40, 1);
         }
         
+
+        if (!IPS_VariableProfileExists("BW.AirJet")) {
+            IPS_CreateVariableProfile("BW.AirJet", 1); // Integer Profil
+            IPS_SetVariableProfileAssociation("BW.AirJet", 0, "Aus", "", -1);
+            IPS_SetVariableProfileAssociation("BW.AirJet", 40, "Stufe 1", "", -1);
+            IPS_SetVariableProfileAssociation("BW.AirJet", 100, "Stufe 2", "", -1);
+        }
+
+
+        // Funktionsvariablen registrieren
+        $this->RegisterVariableBoolean("Power", "Power", "BW.Switch", 1);
+        $this->EnableAction("Power");
+
+        $this->RegisterVariableBoolean("Filter", "Filter", "BW.Switch", 2);
+        $this->EnableAction("Filter");
+
+        $this->RegisterVariableBoolean("Heizung", "Heizung", "BW.Switch", 3);
+        $this->EnableAction("Heizung");
+
         $this->RegisterVariableInteger("Solltemperatur", "Solltemperatur", "BW.Temperature", 5);
         $this->EnableAction("Solltemperatur");
 
-        $this->RegisterVariableInteger("Wassertemperatur", "Wassertemperatur", "BW.Temperature", 6);
-
-        if (!IPS_VariableProfileExists("BW.Bubbles")) {
-            IPS_CreateVariableProfile("BW.Bubbles", 1); // Integer Profile
-            IPS_SetVariableProfileAssociation("BW.Bubbles", 0, "Aus", "", -1);
-            IPS_SetVariableProfileAssociation("BW.Bubbles", 40, "Stufe 1", "", -1);
-            IPS_SetVariableProfileAssociation("BW.Bubbles", 100, "Stufe 2", "", -1);
-        }
-
-        $this->RegisterVariableInteger("AirJetDuesen", "AirJet Düsen", "BW.Bubbles", 7);
+        $this->RegisterVariableInteger("AirJetDuesen", "AirJet Düsen", "BW.AirJet", 7);
         $this->EnableAction("AirJetDuesen");
 
-        $this->RegisterVariableBoolean("HydroJetDuesen", "HydroJet Düsen", "~Switch", 8);
+        $this->RegisterVariableBoolean("HydroJetDuesen", "HydroJet Düsen", "BW.Switch", 8);
         $this->EnableAction("HydroJetDuesen");
 
-        // Neue Statusvariablen
+
+        // Statusvariablen registrieren
+        $this->RegisterVariableBoolean("HeizungAktiv", "Heizung aktiv", "BW.HeatActiv", 4);
+        $this->RegisterVariableInteger("Wassertemperatur", "Wassertemperatur", "BW.Temperature", 6);
         $this->RegisterVariableString("MCUHardVersion", "Hardwareversion", "", 9);
         $this->RegisterVariableString("MCUSoftVersion", "Softwareversion", "", 10);
         $this->RegisterVariableString("ProductName", "Produktname", "", 11);
         $this->RegisterVariableString("Fehlercode", "Fehlercode", "", 12);
+
 
         // Timer für Status-Update registrieren (auf 30 Sekunden gesetzt)
         $this->RegisterTimer("UpdateStatus", 30000, 'BW_UpdateStatus($_IPS[\'TARGET\']);');
@@ -76,7 +86,7 @@ class LayZSpa extends IPSModule
 
     public function ApplyChanges()
     {
-        // Niemals diese Zeile löschen!
+        
         parent::ApplyChanges();
 
         // Update-Intervall einstellen
@@ -97,6 +107,20 @@ class LayZSpa extends IPSModule
         }
     }
 
+    public function Destroy() 
+    {
+        
+        parent::Destroy();
+
+        IPS_DeleteVariableProfile("BW.Switch");
+        IPS_DeleteVariableProfile("BW.HeatActiv");
+        IPS_DeleteVariableProfile("BW.Temperature");
+        IPS_DeleteVariableProfile("BW.AirJet");
+
+    }
+
+    // Eigentlicher Funktionscode
+
     public function RequestAction($Ident, $Value)
     {
         switch($Ident) {
@@ -110,7 +134,7 @@ class LayZSpa extends IPSModule
                 $this->SetHydroJet($Value);
                 break;
             case "Heizung":
-                $this->SetHeizung($Value);
+                $this->SetHeater($Value);
                 break;
             case "Solltemperatur":
                 $this->SetTemperature($Value);
@@ -123,7 +147,7 @@ class LayZSpa extends IPSModule
         }
     }
 
-    public function UpdateDevices()
+    private function UpdateDevices()
     {
         $username = $this->ReadPropertyString("Username");
         $password = $this->ReadPropertyString("Password");
@@ -180,41 +204,46 @@ class LayZSpa extends IPSModule
         }
     }
 
-    private function SetPower(bool $state)
+    public function SetPower(bool $state)
     {
         $this->ControlDevice("power", $state, "Power");
     }
 
-    private function SetFilter(bool $state)
+    public function SetFilter(bool $state)
     {
         $this->ControlDevice("filter", $state ? 2 : 0, "Filter");
     }
 
-    private function SetHydroJet(bool $state)
+    public function SetHydroJet(bool $state)
     {
         $this->ControlDevice("jet", $state ? 1 : 0, "HydroJet Düsen");
-        if (!$state) {
-            IPS_Sleep(2000); // 2 Sekunden warten nach dem Ausschalten der HydroJets
-        }
     }
 
-    private function SetHeizung(bool $state)
+    public function SetHeater(bool $state)
     {
-        if ($state) {
-            $this->SetHydroJet(false);
-            IPS_Sleep(2000); // 2 Sekunden warten nach dem Ausschalten der HydroJets
-        }
         $this->ControlDevice("heat", $state ? 3 : 0, "Heizung");
     }
 
-    private function SetTemperature(int $value)
+    public function SetTemperature(int $value)
     {
         $this->ControlDevice("Tset", $value, "Solltemperatur");
     }
 
-    private function SetAirJet(int $value)
+    public function SetAirJet(int $value)
     {
-        $this->ControlDevice("wave", $value, "AirJet Düsen");
+        if($value == 0)
+        {
+            $this->ControlDevice("wave", 0, "AirJet Düsen");
+        }
+        elseif($value == 1)
+        {
+            $this->ControlDevice("wave", 40, "AirJet Düsen");
+        }
+        elseif($value == 2)
+        {
+            $this->ControlDevice("wave", 100, "AirJet Düsen");
+        }
+        
     }
 
     private function ControlDevice(string $attribute, $value, string $logName)
