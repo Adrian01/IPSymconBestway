@@ -1,31 +1,46 @@
 [![Version](https://img.shields.io/badge/Symcon-PHPModul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 ![Version](https://img.shields.io/badge/Symcon%20Version-5.2%20%3E-blue.svg)
+[![Donate](https://img.shields.io/badge/Donate-Paypal-009cde.svg)](https://www.paypal.me/adrianschmidt1121)
 
+**Inhaltsverzeichnis**
 
-# IPSymconBestway
-   Dieses Modul stellt eine Verbindung zur Bestway SmartHub Cloud her um W-LAN fähige Whirlpools zu integrieren
- 
-   ## Inhaltverzeichnis
-   1. [Voraussetzungen](#1-voraussetzungen)
-   2. [Enthaltene Module](#2-enthaltene-module)
-   3. [Installation](#3-installation)
-   4. [Konfiguration in IP-Symcon](#4-konfiguration-in-ip-symcon)
-   5. [Spenden](#5-spenden)
-   6. [Lizenz](#6-lizenz)
-   
-## 1. Voraussetzungen
+1. [Funktionsumfang](#1-funktionsumfang)  
+2. [Voraussetzungen](#2-voraussetzungen)  
+3. [Installation](#3-installation)  
+4. [Funktionsreferenz](#4-funktionsreferenz)
+5. [Konfiguration](#5-konfiguration)  
+6. [Statusvariablen und Profile](#6-statusvariablen-und-profile)  
+7. [Anhang](#7-anhang)
+    1. [GUIDs der Module](#guids-der-module)
+    2. [Spenden](#spenden)
 
-* mindestens IPS Version 7.0
+## 1. Funktionsumfang
 
+Das Modul dient zur Steuerung eines Lay-Z-Spa Whirlpools mit integiertem W-LAN Modul
 
-## 2. Enthaltene Module
+Aktuelle Features:
 
+- Ein- und Ausschalten der gesamten Pumpeneinheit
+- Ein- und Ausschalten der Filterfunktion
+- Ein- und Ausschalten der Heizung
+- Einstellen der gewünschten Solltemperatur
+- Auslesen der aktuellen Wassertemperatur
+- Auslesen ob die Heizung gerade aktiv heizt
+- Ein- und Ausschalten der HydroJet Düsen
+- Ein- und Ausschalten der AirJet Düsen und wahl der Stärke/Stufen ( Stufe 1 und 2 )
+- Ausgabe eines Fehlercodes wenn dieser ansteht
 
+## 2. Voraussetzungen
+
+- IP-Symcon 7.0
+- Bestway SmartHub Account mit eingebundenem Whirlpool von Lay-Z-Spa
 
 ## 3. Installation
-Über den IP-Symcon Module Store.
 
-## 4. Konfiguration in IP-Symcon
+### 3.1 Laden des Moduls
+
+Modul im Module Control hinzufügen: https://github.com/Adrian01/IPSymconBestway
+
 
 
 ## 5. Spenden
