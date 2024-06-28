@@ -7,7 +7,7 @@
 
 1. [Funktionsumfang](#1-funktionsumfang)  
 2. [Voraussetzungen](#2-voraussetzungen)  
-3. [Installation](#3-installation)  
+3. [Installation](#3-unterstützte-gerätevarianten)  
 4. [Funktionsreferenz](#4-funktionsreferenz)
 5. [Konfiguration](#5-konfiguration)  
 6. [Statusvariablen und Profile](#6-statusvariablen-und-profile)  
@@ -31,31 +31,35 @@ Aktuelle Features:
 - Ein- und Ausschalten der AirJet Düsen und wahl der Stärke/Stufen ( Stufe 1 und 2 )
 - Ausgabe eines Fehlercodes wenn dieser ansteht
 
+
 ## 2. Voraussetzungen
 
 - IP-Symcon 7.0
 - Bestway SmartHub Account mit eingebundenem Whirlpool von Lay-Z-Spa
 
-## 3. Unterstütze Protokoll Varianten
 
-| Protokoll    | Unterstützt        |
+## 3. Unterstützte Gerätevarianten
+
+| Typ          | Unterstützt        |
 | ------------ | ------------------ |
 | Hydrojet     | :white_check_mark: |
 | Hydrojet_Pro | :white_check_mark: |
 
-## 3. Installation
+## 4. Installation
 
-### 3.1 Laden des Moduls
+### 4.1 Laden des Moduls
 
 Modul im Module Control hinzufügen: https://github.com/Adrian01/IPSymconBestway
 
-### 3.2 Eingabe der Anmeldedaten und Modul aktivieren
+
+### 4.2 Eingabe der Anmeldedaten und Modul aktivieren
 
 ![image](docs/login.png)
 
 Über die Checkbox "Modul aktiv" kann die komplette Funktion des Moduls aktiviert und deaktiviert werden. 
 
-## 4. Funktionsreferenz
+
+## 5. Funktionsreferenz
 
  _**Whirlpool Ein-/Ausschalten**_
 ```php
@@ -97,7 +101,7 @@ BW_SetAirJet(int $InstanceID, int $value)
 BW_SetHydroJet(int $InstanceID, bool $state)
 ```
 
-## 5. Statusvariablen
+## 6. Statusvariablen
 
 |         Variable           |   Typ   |                                  Beschreibung                                         |
 |:--------------------------:|:-------:|:-------------------------------------------------------------------------------------:|
@@ -118,9 +122,8 @@ BW_SetHydroJet(int $InstanceID, bool $state)
 
 
 
-## 6. Spenden
+## 8. Spenden
 
 Dieses Modul ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    
-
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H35258DZU36AW" target="_blank"><img src="https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donate_LG.gif" border="0" /></a>
