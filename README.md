@@ -82,13 +82,13 @@ BW_SetHydroJet(int $InstanceID, bool $state)
 ```
 
 
-|         Variable           |  Typ   |                  GUID                  |
-|:--------------------------:|:------:|:--------------------------------------:|
-|      Wassertemperatur      | Integer| enthält die aktuelle Wassertemperatur im Pool |
+|         Variable           |   Typ   |                                  Beschreibung                                         |
+|:--------------------------:|:-------:|:-------------------------------------------------------------------------------------:|
+|      Wassertemperatur      | Integer | enthält die aktuelle Wassertemperatur im Pool                                         |
 |      Heizung aktiv         | Boolean | gibt an ob die Heizung gerade auch wirklich heizt (Solltemperatur erreicht = inaktiv) |
-|      Hardwareversion       | String | enthält die Hardwareversionsnummer der Pumpeneinheit |
-|      Softwareversion       | String | enthält die Softwareversionsnummer der Pumpeneinheit |
-|      Fehlercode            | String | sollte ein Fehler anstehen, wird dieser hier ausgegeben |
+|      Hardwareversion       | String  | enthält die Hardwareversionsnummer der Pumpeneinheit                                  |
+|      Softwareversion       | String  | enthält die Softwareversionsnummer der Pumpeneinheit                                  |
+|      Fehlercode            | String  | sollte ein Fehler anstehen, wird dieser hier ausgegeben                               |
 
 
 ## 5. Spenden
