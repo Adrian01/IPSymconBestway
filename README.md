@@ -32,5 +32,4 @@
 
 Dieses Modul ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    
 
-
-https://www.paypal.com/donate?business=donations@kcparkfriends.org&no_recurring=0&item_name=Friends+of+the+Park&item_number=Fall+Cleanup+Campaign&amount=25&currency_code=USD
+https://www.paypal.com/donate/?hosted_button_id=2TNSCRPKP3T98
