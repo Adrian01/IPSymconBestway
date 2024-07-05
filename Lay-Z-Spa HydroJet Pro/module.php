@@ -107,17 +107,15 @@ class LayZSpa extends IPSModule
         }
     }
 
+    
     public function Destroy() 
     {
         
         parent::Destroy();
 
-        IPS_DeleteVariableProfile("BW.Switch");
-        IPS_DeleteVariableProfile("BW.HeatActiv");
-        IPS_DeleteVariableProfile("BW.Temperature");
-        IPS_DeleteVariableProfile("BW.AirJet");
 
     }
+
 
     // Eigentlicher Funktionscode
 
@@ -162,16 +160,12 @@ class LayZSpa extends IPSModule
                 $this->UpdateDeviceInfo();
                 $this->UpdateStatus();
                 $this->SetStatus(102); // Modul aktiv
-                IPS_LogMessage('Lay-Z-Spa', 'Gerät erfolgreich verbunden!');
+                $this->LogMessage('Gerät erfolgreich verbunden!', KL_NOTIFY);
             } else {
                 $this->SetStatus(202); // Geräte-ID konnte nicht abgerufen werden
-                IPS_SetProperty($this->InstanceID, 'ModuleActive', false); // Modul deaktivieren
-                IPS_ApplyChanges($this->InstanceID);
             }
         } else {
             $this->SetStatus(202); // Token konnte nicht abgerufen werden
-            IPS_SetProperty($this->InstanceID, 'ModuleActive', false); // Modul deaktivieren
-            IPS_ApplyChanges($this->InstanceID);
         }
     }
 
@@ -206,56 +200,69 @@ class LayZSpa extends IPSModule
     public function SetPower(bool $state)
     {
         $this->ControlDevice("power", $state, "Power");
+        $this->LogMessage("Der Whirlpool wurde " . ($state ? "ein" : "aus") . "geschalten", KL_NOTIFY);
     }
 
     public function SetFilter(bool $state)
     {
-        $this->ControlDevice("filter", $state ? 2 : 0, "Filter");
+        $this->ControlDevice("filter", $state ? 2 : 0);
+        $this->LogMessage("Der Filter wurde " . ($state ? "ein" : "aus") . "geschalten", KL_NOTIFY);
     }
 
     public function SetHydroJet(bool $state)
     {
         $this->ControlDevice("jet", $state ? 1 : 0, "HydroJet Düsen");
+        $this->LogMessage("Die HydroJet Düsen wurden " . ($state ? "ein" : "aus") . "geschalten", KL_NOTIFY);
     }
 
     public function SetHeater(bool $state)
     {
         $this->ControlDevice("heat", $state ? 3 : 0, "Heizung");
+        $this->LogMessage("Die Heizung wurde " . ($state ? "ein" : "aus") . "geschalten", KL_NOTIFY);
     }
 
     public function SetTemperature(int $value)
     {
         $this->ControlDevice("Tset", $value, "Solltemperatur");
+        $this->LogMessage("Solltemperatur wurde auf " . $value . " °C eingestellt", KL_NOTIFY);
     }
 
     public function SetAirJet(int $value)
     {
-        if($value == 0)
+        switch($value)
         {
-            $this->ControlDevice("wave", 0, "AirJet Düsen");
-        }
-        elseif($value == 1)
-        {
-            $this->ControlDevice("wave", 40, "AirJet Düsen");
-        }
-        elseif($value == 2)
-        {
-            $this->ControlDevice("wave", 100, "AirJet Düsen");
+            case 0: 
+                $this->ControlDevice("wave", 0, "AirJet Düsen");
+                $this->LogMessage("Die AirJet Düsen wurden ausgeschalten", KL_NOTIFY);
+                break;
+            
+            case 1:
+                $this->ControlDevice("wave", 40, "AirJet Düsen");
+                $this->LogMessage("Die AirJet Düsen wurden auf Stufe 1 eingestellt", KL_NOTIFY);
+                break;
+            
+            case 2:
+                $this->ControlDevice("wave", 100, "AirJet Düsen");
+                $this->LogMessage("Die AirJet Düsen wurden auf Stufe 2 eingestellt", KL_NOTIFY);
+                break;
         }
         
     }
 
-    private function ControlDevice(string $attribute, $value, string $logName)
+    private function ControlDevice(string $attribute, $value)
     {
         $token = $this->GetValidToken();
         $deviceId = $this->ReadAttributeString("DeviceId");
         if ($token !== null && $deviceId !== "") {
             $controller = new PoolController([], $token, $this->apiRoot, [], $deviceId, $this->applicationId);
             $controller->setDeviceAttribute($attribute, $value);
-            $this->LogMessage("$logName wurde auf " . ($value ? "EIN" : "AUS") . " gesetzt.", KL_NOTIFY);
             IPS_Sleep(3000); // 3 Sekunde warten
+
             $this->UpdateStatus();
-        } else {
+
+        } 
+        else
+        {
             $this->LogMessage('Token oder Geräte-ID konnte nicht abgerufen werden.', KL_WARNING);
         }
     }
@@ -305,6 +312,7 @@ class LayZSpa extends IPSModule
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 6);
 
         $response = curl_exec($ch);
         curl_close($ch);
@@ -371,10 +379,33 @@ class LayZSpa extends IPSModule
                 "expire_at" => $api_data["expire_at"],
                 "application_id" => $application_id
             );
-        } else {
-            IPS_LogMessage('Lay-Z-Spa', "Fehler beim Abrufen des Benutzertokens: " . $response);
-            return null;
-        }
+        } 
+        
+        switch ($api_data["error_code"])
+
+        {
+            case 9020:
+                $this->LogMessage('Verbindungsfehler: Benutzername oder Passwort falsch!', KL_ERROR);
+                $this->SetTimerInterval("UpdateStatus", 0);
+                break;
+    
+            case 9005:
+                $this->LogMessage('Verbindungsfehler: Benutzer existiert nicht!', KL_ERROR);
+                $this->SetTimerInterval("UpdateStatus", 0);
+                break;
+       
+            case 9041:
+                $time = substr($response, -14, 3);
+                $this->LogMessage('Verbindungsfehler: Zu viele Anfragen in kürzester Zeit, versuche es in ' . $time . ' Sekunden erneut!', KL_ERROR);
+                $this->SetTimerInterval("UpdateStatus", 0);
+                break;
+            
+            default:
+                $this->LogMessage('Unbekannter Fehler: ' . $response, KL_ERROR);
+                $this->SetTimerInterval("UpdateStatus", 0);
+                break;
+        }      
+
     }
 
     private function SetValueIfExists(string $Ident, $Value)
@@ -384,6 +415,7 @@ class LayZSpa extends IPSModule
         }
     }
 
+    
     private function GetErrorCode(array $attributes): string
     {
         for ($i = 1; $i <= 12; $i++) {
@@ -395,15 +427,8 @@ class LayZSpa extends IPSModule
         return "keine Fehler";
     }
 
-    private function Debug(string $message, $data = null)
-    {
-        if ($data) {
-            IPS_LogMessage('Lay-Z-Spa', $message . ': ' . print_r($data, true));
-        } else {
-            IPS_LogMessage('Lay-Z-Spa', $message);
-        }
-    }
 }
+
 
 class PoolController
 {
@@ -446,7 +471,7 @@ class PoolController
 
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
-            IPS_LogMessage('Lay-Z-Spa', 'Request Error:' . curl_error($ch));
+            $this->LogMessage('Request Error:' . curl_error($ch));
             curl_close($ch);
             return null;
         }
@@ -455,7 +480,7 @@ class PoolController
         $data = json_decode($response, true);
 
         if ($data === null) {
-            IPS_LogMessage('Lay-Z-Spa', "Fehler beim Dekodieren der JSON-Antwort\nAntwort: " . $response);
+            $this->LogMessage('Fehler beim Dekodieren der JSON-Antwort\nAntwort: ' . $response);
             return null;
         }
 
@@ -467,6 +492,7 @@ class PoolController
         $url = $this->_api_root . "/app/control/" . $this->_did;
         $this->_doPost($url, ['attrs' => $attrs]);
     }
+
 
     private function _doPost($url, $body)
     {
@@ -484,7 +510,7 @@ class PoolController
 
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
-            IPS_LogMessage('Lay-Z-Spa', 'Request Error:' . curl_error($ch));
+            $this->LogMessage('Request Error:' . curl_error($ch));
             curl_close($ch);
             return null;
         }
@@ -493,11 +519,12 @@ class PoolController
         $data = json_decode($response, true);
 
         if ($data === null) {
-            IPS_LogMessage('Lay-Z-Spa', "Fehler beim Dekodieren der JSON-Antwort\nAntwort: " . $response);
+            $this->LogMessage('Fehler beim Dekodieren der JSON-Antwort\nAntwort: ' . $response);
             return null;
         }
 
         return $data;
     }
 }
+
 ?>
