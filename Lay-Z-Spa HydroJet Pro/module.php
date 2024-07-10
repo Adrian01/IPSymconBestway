@@ -471,7 +471,7 @@ class PoolController
 
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
-            $this->LogMessage('Request Error:' . curl_error($ch));
+            $this->LogMessage('Request Error:' . curl_error($ch), KL_ERROR);
             curl_close($ch);
             return null;
         }
@@ -480,7 +480,7 @@ class PoolController
         $data = json_decode($response, true);
 
         if ($data === null) {
-            $this->LogMessage('Fehler beim Dekodieren der JSON-Antwort\nAntwort: ' . $response);
+            $this->LogMessage('Fehler beim Dekodieren der JSON-Antwort\nAntwort: ' . $response, KL_ERROR);
             return null;
         }
 
@@ -510,7 +510,7 @@ class PoolController
 
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
-            $this->LogMessage('Request Error:' . curl_error($ch));
+            $this->LogMessage('Request Error:' . curl_error($ch), KL_ERROR);
             curl_close($ch);
             return null;
         }
@@ -519,7 +519,7 @@ class PoolController
         $data = json_decode($response, true);
 
         if ($data === null) {
-            $this->LogMessage('Fehler beim Dekodieren der JSON-Antwort\nAntwort: ' . $response);
+            $this->LogMessage('Fehler beim Dekodieren der JSON-Antwort\nAntwort: ' . $response, KL_ERROR);
             return null;
         }
 
