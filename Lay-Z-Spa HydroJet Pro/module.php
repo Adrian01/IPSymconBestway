@@ -174,28 +174,41 @@ class LayZSpa extends IPSModule
         if (!$this->ReadPropertyBoolean("ModuleActive")) {
             return; // Modul ist inaktiv
         }
-
+    
         $token = $this->GetValidToken();
         $deviceId = $this->ReadAttributeString("DeviceId");
+    
         if ($token !== null && $deviceId !== "") {
-            $status = $this->getDeviceStatus($token, $deviceId);
-            if ($status !== null) {
-                $this->SetValueIfExists("Power", isset($status["attr"]["power"]) && $status["attr"]["power"] == 1);
-                $this->SetValueIfExists("Filter", isset($status["attr"]["filter"]) && $status["attr"]["filter"] == 2);
-                $this->SetValueIfExists("HydroJetDuesen", isset($status["attr"]["jet"]) && $status["attr"]["jet"] == 1);
-                $this->SetValueIfExists("Heizung", isset($status["attr"]["heat"]) && $status["attr"]["heat"] != 0);
-                $this->SetValueIfExists("Solltemperatur", isset($status["attr"]["Tset"]) ? $status["attr"]["Tset"] : 0);
-                $this->SetValueIfExists("AirJetDuesen", isset($status["attr"]["wave"]) ? $status["attr"]["wave"] : 0);
-                $this->SetValueIfExists("Wassertemperatur", isset($status["attr"]["Tnow"]) ? $status["attr"]["Tnow"] : 0);
-                $this->SetValueIfExists("HeizungAktiv", isset($status["attr"]["heat"]) && in_array($status["attr"]["heat"], [3, 5, 6]));
-                $this->SetValueIfExists("Fehlercode", $this->GetErrorCode($status["attr"]));
+            $controller = new PoolController([], $token, $this->apiRoot, [], $deviceId, $this->applicationId);
+            $result = $controller->getDeviceStatus();
+    
+            if ($result['error']) {
+                $this->LogMessage('Lay-Z-Spa Fehler: ' . $result['message'], KL_ERROR);
             } else {
-                $this->LogMessage('Statusinformationen konnten nicht abgerufen werden.', KL_WARNING);
+                $status = $result['data'];
+                if (isset($status["attr"])) {
+                    $this->SetValueIfExists("Power", isset($status["attr"]["power"]) && $status["attr"]["power"] == 1);
+                    $this->SetValueIfExists("Filter", isset($status["attr"]["filter"]) && $status["attr"]["filter"] == 2);
+                    $this->SetValueIfExists("HydroJetDuesen", isset($status["attr"]["jet"]) && $status["attr"]["jet"] == 1);
+                    $this->SetValueIfExists("Heizung", isset($status["attr"]["heat"]) && $status["attr"]["heat"] != 0);
+                    $this->SetValueIfExists("Solltemperatur", isset($status["attr"]["Tset"]) ? $status["attr"]["Tset"] : 0);
+                    $this->SetValueIfExists("AirJetDuesen", isset($status["attr"]["wave"]) ? $status["attr"]["wave"] : 0);
+                    $this->SetValueIfExists("Wassertemperatur", isset($status["attr"]["Tnow"]) ? $status["attr"]["Tnow"] : 0);
+                    $this->SetValueIfExists("HeizungAktiv", isset($status["attr"]["heat"]) && in_array($status["attr"]["heat"], [3, 5, 6]));
+                    
+                    // Fehlercode-Variable setzen
+                    $this->SetValueIfExists("Fehlercode", $this->GetErrorCode($status["attr"]));
+    
+                    $this->LogMessage('Status Updates wurden erfolgreich vom Server geladen.', KL_NOTIFY);
+                } else {
+                    $this->LogMessage('Lay-Z-Spa: Ungültige Statusantwort von der API.', KL_WARNING);
+                }
             }
         } else {
             $this->LogMessage('Token oder Geräte-ID konnte nicht abgerufen werden.', KL_WARNING);
         }
-    }
+    }    
+    
 
     public function SetPower(bool $state)
     {
@@ -451,7 +464,7 @@ class PoolController
 
     public function setDeviceAttribute($attribute, $value)
     {
-        $this->_doControlPost([$attribute => $value]);
+        return $this->_doControlPost([$attribute => $value]);
     }
 
     public function getDeviceStatus()
@@ -470,29 +483,36 @@ class PoolController
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
         $response = curl_exec($ch);
+
         if (curl_errno($ch)) {
-            $this->LogMessage('Request Error:' . curl_error($ch), KL_ERROR);
-            curl_close($ch);
-            return null;
+            return [
+                'error' => true,
+                'message' => 'Request Error: ' . curl_error($ch)
+            ];
         }
+
         curl_close($ch);
 
         $data = json_decode($response, true);
 
         if ($data === null) {
-            $this->LogMessage('Fehler beim Dekodieren der JSON-Antwort\nAntwort: ' . $response, KL_ERROR);
-            return null;
+            return [
+                'error' => true,
+                'message' => 'Fehler beim Dekodieren der JSON-Antwort: ' . $response
+            ];
         }
 
-        return $data;
+        return [
+            'error' => false,
+            'data' => $data
+        ];
     }
 
     private function _doControlPost($attrs)
     {
         $url = $this->_api_root . "/app/control/" . $this->_did;
-        $this->_doPost($url, ['attrs' => $attrs]);
+        return $this->_doPost($url, ['attrs' => $attrs]);
     }
-
 
     private function _doPost($url, $body)
     {
@@ -509,22 +529,31 @@ class PoolController
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
 
         $response = curl_exec($ch);
+
         if (curl_errno($ch)) {
-            $this->LogMessage('Request Error:' . curl_error($ch), KL_ERROR);
-            curl_close($ch);
-            return null;
+            return [
+                'error' => true,
+                'message' => 'Request Error: ' . curl_error($ch)
+            ];
         }
+
         curl_close($ch);
 
         $data = json_decode($response, true);
 
         if ($data === null) {
-            $this->LogMessage('Fehler beim Dekodieren der JSON-Antwort\nAntwort: ' . $response, KL_ERROR);
-            return null;
+            return [
+                'error' => true,
+                'message' => 'Fehler beim Dekodieren der JSON-Antwort: ' . $response
+            ];
         }
 
-        return $data;
+        return [
+            'error' => false,
+            'data' => $data
+        ];
     }
 }
+
 
 ?>
